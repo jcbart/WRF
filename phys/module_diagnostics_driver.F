@@ -192,6 +192,8 @@ CONTAINS
 
       !  Lightning flash rate diagnostic production.
 
+      CALL domain_clock_get( grid, current_time=currentTime)
+
       LIGHTNING: IF ( config_flags%lightning_option /= 0 ) THEN 
          CALL wrf_debug ( 100 , '--> CALL DIAGNOSTICS PACKAGE: LIGHTNING_DRIVER' )
          CALL lightning_driver ( &
@@ -204,7 +206,7 @@ CONTAINS
             grid%z, moist,                                     &
           ! Scheme specific prognostics
             grid%ktop_deep, grid%refl_10cm,                    &
-            domain_get_current_time( grid ),                   &
+            currentTime,                   &
           ! Flashrate namelist inputs
             config_flags%lightning_option,                     &
             config_flags%lightning_dt,                         &

@@ -276,7 +276,7 @@
 ! Inputs
  REAL,                                    INTENT(IN   ) :: iccg_prescribed_num, iccg_prescribed_den
  REAL, DIMENSION( ims:ime, jms:jme, 12 ), INTENT(IN   ) :: iccg_in_num, iccg_in_den
- TYPE(WRFU_Time),                         INTENT(IN   ) :: current_time  ! For use of IC:CG input
+ TYPE(WRFU_Time),                         INTENT(INOUT) :: current_time  ! For use of IC:CG input
 
 ! Order dependent args for domain, mem, and tile dims
  INTEGER, INTENT(IN   )    ::       ids,ide, jds,jde, kds,kde

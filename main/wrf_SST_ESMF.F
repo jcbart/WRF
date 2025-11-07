@@ -87,11 +87,15 @@ CONTAINS
    ! exportState.  
    SUBROUTINE sst_component_init1( gcomp, importState, exportState, clock, rc )
      USE module_io
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
-     INTEGER,                     INTENT(  OUT) :: rc
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp) :: gcomp
+     TYPE(ESMF_State)    :: importState
+     TYPE(ESMF_State)    :: exportState
+     TYPE(ESMF_Clock)    :: clock
+     INTEGER, INTENT(  OUT) :: rc
 !<DESCRIPTION>
 !     SST component init routine, phase 1.
 !
@@ -142,7 +146,9 @@ CONTAINS
      write(str,'(A,A)') 'Subroutine sst_component_init1: Opening data file ', &
        TRIM(sstinfilename)
      CALL wrf_message ( TRIM(str) )
-     CALL wrf_open_for_read ( TRIM(sstinfilename) , &
+     ! WRF appears to have switched how wrf_open_for_read works
+     ! so I am hard coding the call to ext_ncd_open_for_read instead - JB
+     CALL ext_ncd_open_for_read ( TRIM(sstinfilename) , &
                               mpicom ,              &
                               mpicom ,              &
                               "DATASET=INPUT" ,     &
@@ -491,11 +497,15 @@ CONTAINS
    SUBROUTINE sst_component_init2( gcomp, importState, exportState, clock, rc )
      USE module_metadatautils, ONLY: GetDecompFromState
      USE module_io
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
-     INTEGER,                     INTENT(  OUT) :: rc
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp) :: gcomp
+     TYPE(ESMF_State)    :: importState
+     TYPE(ESMF_State)    :: exportState
+     TYPE(ESMF_Clock)    :: clock
+     INTEGER, INTENT(  OUT) :: rc
 !<DESCRIPTION>
 !     SST component init routine, phase 2.
 !
@@ -518,7 +528,7 @@ CONTAINS
      INTEGER :: MemoryEnd(NUMDIMS)
      INTEGER :: PatchStart(NUMDIMS)
      INTEGER :: PatchEnd(NUMDIMS)
-     INTEGER :: rc, i, j
+     INTEGER :: i, j
      INTEGER :: ierr
 
     ! Get decomposition information from importState.  Note that index 
@@ -756,7 +766,9 @@ CONTAINS
      write(str,'(A,A)') 'sst_component_init2: Opening data file ', &
        TRIM(sstinfilename)
      CALL wrf_message ( TRIM(str) )
-     CALL wrf_open_for_read ( TRIM(sstinfilename) , &
+     ! WRF appears to have switched how wrf_open_for_read works
+     ! so I am hard coding the call to ext_ncd_open_for_read instead - JB
+     CALL ext_ncd_open_for_read ( TRIM(sstinfilename) , &
                               mpicom ,              &
                               mpicom ,              &
                               "DATASET=INPUT" ,     &
@@ -783,10 +795,13 @@ CONTAINS
 
 
    SUBROUTINE sst_component_run1( gcomp, importState, exportState, clock, rc )
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
-     INTEGER,                     INTENT(  OUT) :: rc
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp) :: gcomp
+     TYPE(ESMF_State)    :: importState, exportState
+     TYPE(ESMF_Clock)    :: clock
+     INTEGER, INTENT(  OUT) :: rc
 !<DESCRIPTION>
 !     SST component run routine, phase 1.
 !     Read "SST" data from file and stuff into exportState.  
@@ -810,10 +825,13 @@ CONTAINS
 
 
    SUBROUTINE sst_component_run2( gcomp, importState, exportState, clock, rc )
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
-     INTEGER,                     INTENT(  OUT) :: rc
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp)  :: gcomp
+     TYPE(ESMF_State)     :: importState, exportState
+     TYPE(ESMF_Clock)     :: clock
+     INTEGER, INTENT(  OUT) :: rc
 !<DESCRIPTION>
 !     SST component run routine, phase 2.
 !     Get from importState, compare with file data, and error-exit 
@@ -845,10 +863,13 @@ CONTAINS
 
    SUBROUTINE sst_component_finalize( gcomp, importState, exportState, clock, rc )
      USE module_io
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
-     INTEGER,                     INTENT(  OUT) :: rc
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp) :: gcomp
+     TYPE(ESMF_State)    :: importState, exportState
+     TYPE(ESMF_Clock)    :: clock
+     INTEGER, INTENT(  OUT) :: rc
 !<DESCRIPTION>
 !     SST component finalize routine.
 !
@@ -955,7 +976,7 @@ CONTAINS
 
 
    SUBROUTINE sst_register(gcomp, rc)
-     TYPE(ESMF_GridComp), INTENT(INOUT) :: gcomp
+     TYPE(ESMF_GridComp)  :: gcomp
      INTEGER, INTENT(OUT) :: rc
      INTEGER :: finalrc
 !
@@ -1061,7 +1082,7 @@ CONTAINS
 
 
    SUBROUTINE WRFSSTCpl_register(comp, rc)
-     TYPE(ESMF_CplComp), INTENT(INOUT) :: comp
+     TYPE(ESMF_CplComp)   :: comp
      INTEGER, INTENT(OUT) :: rc
 !
 !<DESCRIPTION>
@@ -1106,9 +1127,9 @@ CONTAINS
 
     SUBROUTINE WRFSSTCpl_init(comp, importState, exportState, clock, rc)
       USE module_metadatautils, ONLY: AttachDecompToState, GetDecompFromState
-      TYPE(ESMF_CplComp), INTENT(INOUT) :: comp
-      TYPE(ESMF_State), INTENT(INOUT) :: importState, exportState
-      TYPE(ESMF_Clock), INTENT(INOUT) :: clock
+      TYPE(ESMF_CplComp) :: comp
+      TYPE(ESMF_State)   :: importState, exportState
+      TYPE(ESMF_Clock)   :: clock
       INTEGER, INTENT(OUT) :: rc
 !<DESCRIPTION>
 !     WRF-SST coupler component init routine.  This simply passes needed 
@@ -1178,9 +1199,9 @@ CONTAINS
 
     SUBROUTINE WRFSSTCpl_run(comp, importState, exportState, clock, rc)
       USE ESMF
-      TYPE(ESMF_CplComp), INTENT(INOUT) :: comp
-      TYPE(ESMF_State), INTENT(INOUT) :: importState, exportState
-      TYPE(ESMF_Clock), INTENT(INOUT) :: clock
+      TYPE(ESMF_CplComp) :: comp
+      TYPE(ESMF_State)   :: importState, exportState
+      TYPE(ESMF_Clock)   :: clock
       INTEGER, INTENT(OUT) :: rc
 !<DESCRIPTION>
 !     WRF-SST coupler component run routine.
@@ -1443,8 +1464,8 @@ CONTAINS
 
     SUBROUTINE WRFSSTCpl_final(comp, importState, exportState, clock, rc)
       TYPE(ESMF_CplComp) :: comp
-      TYPE(ESMF_State), INTENT(INOUT) :: importState, exportState
-      TYPE(ESMF_Clock), INTENT(INOUT) :: clock
+      TYPE(ESMF_State)   :: importState, exportState
+      TYPE(ESMF_Clock)   :: clock
       INTEGER, INTENT(OUT) :: rc
 !<DESCRIPTION>
 !     WRF-SST coupler component finalize routine.
@@ -1465,13 +1486,13 @@ CONTAINS
 
       ! Only thing to do here is release redist and route handles
       IF ( fromWRF_rh_ready ) THEN
-        CALL ESMF_RouteHandleDestroy(fromWRF_rh, rc)
+        CALL ESMF_RouteHandleDestroy(fromWRF_rh, rc=rc)
         IF ( rc /= ESMF_SUCCESS ) THEN
           CALL wrf_error_fatal ( 'WRFSSTCpl_final:  ESMF_RouteHandleDestroy(fromWRF_rh) failed' )
         ENDIF
       ENDIF
       IF ( fromSST_rh_ready ) THEN
-        CALL ESMF_RouteHandleDestroy(fromSST_rh, rc)
+        CALL ESMF_RouteHandleDestroy(fromSST_rh,rc=rc)
         IF ( rc /= ESMF_SUCCESS ) THEN
           CALL wrf_error_fatal ( 'WRFSSTCpl_final:  ESMF_RouteHandleDestroy(fromSST_rh) failed' )
         ENDIF

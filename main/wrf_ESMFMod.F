@@ -522,10 +522,14 @@ CONTAINS
 
 
    SUBROUTINE wrf_component_init1( gcomp, importState, exportState, clock, rc )
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp) :: gcomp
+     TYPE(ESMF_State)    :: importState
+     TYPE(ESMF_State)    :: exportState
+     TYPE(ESMF_Clock)    :: clock
 #ifdef DM_PARALLEL
      TYPE(ESMF_VM) :: vm
      INTEGER :: mpicomtmp
@@ -551,10 +555,10 @@ CONTAINS
 !TODO:  information.  
 
      ! Local variables
-     TYPE(ESMF_GridComp), POINTER :: p_gcomp
-     TYPE(ESMF_State),    POINTER :: p_importState
-     TYPE(ESMF_State),    POINTER :: p_exportState
-     TYPE(ESMF_Clock),    POINTER :: p_clock
+     !TYPE(ESMF_GridComp), POINTER :: p_gcomp
+     !TYPE(ESMF_State),    POINTER :: p_importState
+     !TYPE(ESMF_State),    POINTER :: p_exportState
+     !TYPE(ESMF_Clock),    POINTER :: p_clock
      ! Time hackery
      TYPE(ESMF_Time) :: startTime
      TYPE(ESMF_Time) :: stopTime
@@ -569,15 +573,15 @@ CONTAINS
 
      rc = ESMF_SUCCESS
 
-     p_gcomp => gcomp
-     p_importState => importState
-     p_exportState => exportState
-     p_clock => clock
+     !p_gcomp => gcomp
+     !p_importState => importState
+     !p_exportState => exportState
+     !p_clock => clock
      ! NOTE:  It will be possible to remove this call once ESMF supports 
      !        interfaces ESMF_ClockGetCurrent(), ESMF_ImportStateGetCurrent(), 
      !        ESMF_ExportStateGetCurrent(), and ESMF_GridCompGetCurrent().  
-     CALL ESMF_SetCurrent( gcomp=p_gcomp, importState=p_importState, &
-                           exportState=p_exportState, clock=p_clock )
+     !CALL ESMF_SetCurrent( gcomp=p_gcomp, importState=p_importState, &
+     !                      exportState=p_exportState, clock=p_clock )
 
 #ifdef DM_PARALLEL
      CALL ESMF_VMGetCurrent(vm, rc=rc)
@@ -635,10 +639,14 @@ CONTAINS
 
 
    SUBROUTINE wrf_component_init2( gcomp, importState, exportState, clock, rc )
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp) :: gcomp
+     TYPE(ESMF_State)    :: importState
+     TYPE(ESMF_State)    :: exportState
+     TYPE(ESMF_Clock)    :: clock
      INTEGER,                     INTENT(  OUT) :: rc
 !<DESCRIPTION>
 !     WRF component init routine, phase 2.  Initializes importState and 
@@ -654,10 +662,10 @@ CONTAINS
 !</DESCRIPTION>
 
      ! Local variables
-     TYPE(ESMF_GridComp), POINTER :: p_gcomp
-     TYPE(ESMF_State),    POINTER :: p_importState
-     TYPE(ESMF_State),    POINTER :: p_exportState
-     TYPE(ESMF_Clock),    POINTER :: p_clock
+     !TYPE(ESMF_GridComp), POINTER :: p_gcomp
+     !TYPE(ESMF_State),    POINTER :: p_importState
+     !TYPE(ESMF_State),    POINTER :: p_exportState
+     !TYPE(ESMF_Clock),    POINTER :: p_clock
      ! Time hackery
      TYPE(ESMF_Time) :: startTime
      TYPE(ESMF_Time) :: stopTime
@@ -700,15 +708,15 @@ CONTAINS
        CALL wrf_error_fatal("wrf_component_init2:  importState is not an import state" )
      ENDIF
 
-     p_gcomp => gcomp
-     p_importState => importState
-     p_exportState => exportState
-     p_clock => clock
+     !p_gcomp => gcomp
+     !p_importState => importState
+     !p_exportState => exportState
+     !p_clock => clock
      ! NOTE:  It will be possible to remove this call once ESMF supports 
      !        interfaces ESMF_ClockGetCurrent(), ESMF_ImportStateGetCurrent(), 
      !        ESMF_ExportStateGetCurrent(), and ESMF_GridCompGetCurrent().  
-     CALL ESMF_SetCurrent( gcomp=p_gcomp, importState=p_importState, &
-                           exportState=p_exportState, clock=p_clock )
+     !CALL ESMF_SetCurrent( gcomp=p_gcomp, importState=p_importState, &
+     !                      exportState=p_exportState, clock=p_clock )
 
      ! populate ESMF import and export states
      CALL wrf_state_populate( rc )
@@ -783,10 +791,13 @@ CONTAINS
 
 
    SUBROUTINE wrf_component_run( gcomp, importState, exportState, clock, rc )
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
-     INTEGER,                     INTENT(  OUT) :: rc
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp) :: gcomp
+     TYPE(ESMF_State)    :: importState, exportState
+     TYPE(ESMF_Clock)    :: clock
+     INTEGER, INTENT(  OUT) :: rc
 !<DESCRIPTION>
 !     WRF component run routine.
 !
@@ -800,10 +811,10 @@ CONTAINS
 !</DESCRIPTION>
 
      ! Local variables
-     TYPE(ESMF_GridComp), POINTER :: p_gcomp
-     TYPE(ESMF_State),    POINTER :: p_importState
-     TYPE(ESMF_State),    POINTER :: p_exportState
-     TYPE(ESMF_Clock),    POINTER :: p_clock
+     !TYPE(ESMF_GridComp), POINTER :: p_gcomp
+     !TYPE(ESMF_State),    POINTER :: p_importState
+     !TYPE(ESMF_State),    POINTER :: p_exportState
+     !TYPE(ESMF_Clock),    POINTER :: p_clock
      ! timing
      TYPE(ESMF_Time) :: currentTime, nextTime
      TYPE(ESMF_TimeInterval) :: runLength     ! how long to run in this call
@@ -811,15 +822,15 @@ CONTAINS
 
      CALL wrf_debug ( 100 , 'DEBUG wrf_component_run():  begin' )
 
-     p_gcomp => gcomp
-     p_importState => importState
-     p_exportState => exportState
-     p_clock => clock
+     !p_gcomp => gcomp
+     !p_importState => importState
+     !p_exportState => exportState
+     !p_clock => clock
      ! NOTE:  It will be possible to remove this call once ESMF supports 
      !        interfaces ESMF_ClockGetCurrent(), ESMF_ImportStateGetCurrent(), 
      !        ESMF_ExportStateGetCurrent(), and ESMF_GridCompGetCurrent().  
-     CALL ESMF_SetCurrent( gcomp=p_gcomp, importState=p_importState, &
-                           exportState=p_exportState, clock=p_clock )
+     !CALL ESMF_SetCurrent( gcomp=p_gcomp, importState=p_importState, &
+     !                      exportState=p_exportState, clock=p_clock )
 
      ! connect ESMF clock with WRF domain clock
      CALL ESMF_ClockGet( clock, currTime=currentTime, timeStep=runLength, rc=rc )
@@ -850,10 +861,13 @@ CONTAINS
 
 
    SUBROUTINE wrf_component_finalize( gcomp, importState, exportState, clock, rc )
-     TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
-     TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
-     TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
-     INTEGER,                     INTENT(  OUT) :: rc
+     !TYPE(ESMF_GridComp), TARGET, INTENT(INOUT) :: gcomp
+     !TYPE(ESMF_State),    TARGET, INTENT(INOUT) :: importState, exportState
+     !TYPE(ESMF_Clock),    TARGET, INTENT(INOUT) :: clock
+     TYPE(ESMF_GridComp) :: gcomp
+     TYPE(ESMF_State)    :: importState, exportState
+     TYPE(ESMF_Clock)    :: clock
+     INTEGER, INTENT(  OUT) :: rc
 !<DESCRIPTION>
 !     WRF component finalize routine.
 !
@@ -867,20 +881,20 @@ CONTAINS
 !</DESCRIPTION>
 
      ! Local variables
-     TYPE(ESMF_GridComp), POINTER :: p_gcomp
-     TYPE(ESMF_State),    POINTER :: p_importState
-     TYPE(ESMF_State),    POINTER :: p_exportState
-     TYPE(ESMF_Clock),    POINTER :: p_clock
-     INTEGER :: rc
-     p_gcomp => gcomp
-     p_importState => importState
-     p_exportState => exportState
-     p_clock => clock
+     !TYPE(ESMF_GridComp), POINTER :: p_gcomp
+     !TYPE(ESMF_State),    POINTER :: p_importState
+     !TYPE(ESMF_State),    POINTER :: p_exportState
+     !TYPE(ESMF_Clock),    POINTER :: p_clock
+     !INTEGER :: rc
+     !p_gcomp => gcomp
+     !p_importState => importState
+     !p_exportState => exportState
+     !p_clock => clock
      ! NOTE:  It will be possible to remove this call once ESMF supports 
      !        interfaces ESMF_ClockGetCurrent(), ESMF_ImportStateGetCurrent(), 
      !        ESMF_ExportStateGetCurrent(), and ESMF_GridCompGetCurrent().  
-     CALL ESMF_SetCurrent( gcomp=p_gcomp, importState=p_importState, &
-                           exportState=p_exportState, clock=p_clock )
+     !CALL ESMF_SetCurrent( gcomp=p_gcomp, importState=p_importState, &
+     !                      exportState=p_exportState, clock=p_clock )
 
      ! Call WRF "finalize" routine, suppressing call to MPI_FINALIZE so 
      ! ESMF can do it (if needed) during ESMF_Finalize().  
@@ -1087,7 +1101,7 @@ CONTAINS
 
 
    SUBROUTINE wrf_register(gcomp, rc)
-     TYPE(ESMF_GridComp), INTENT(INOUT) :: gcomp
+     TYPE(ESMF_GridComp) :: gcomp
      INTEGER, INTENT(OUT) :: rc
 !
 !<DESCRIPTION>

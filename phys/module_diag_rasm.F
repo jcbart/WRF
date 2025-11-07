@@ -72,7 +72,7 @@ CONTAINS
     INTEGER, INTENT(IN)                       :: output_freq            ! interval type
     INTEGER, INTENT(IN)                       :: run_days
     INTEGER, DIMENSION(num_tiles), INTENT(IN) :: i_start, i_end, j_start, j_end
-    TYPE(WRFU_Time), INTENT(IN)               :: currentTime
+    TYPE(WRFU_Time), INTENT(INOUT)               :: currentTime
     TYPE(WRFU_Alarm), INTENT(INOUT)           :: avgOutAlarm
     INTEGER, INTENT(INOUT)                    :: nsteps                 ! number of step accumulated
     CHARACTER(*), INTENT(INOUT)               :: avgOutDateStr
@@ -335,7 +335,7 @@ CONTAINS
    
     INTEGER, INTENT(IN)                       :: num_tiles
     INTEGER, DIMENSION(num_tiles), INTENT(IN) :: i_start, i_end, j_start, j_end
-    TYPE(WRFU_Time), INTENT(IN)               :: currentTime
+    TYPE(WRFU_Time), INTENT(INOUT)               :: currentTime
     TYPE(WRFU_Alarm), INTENT(INOUT)           :: avgOutAlarm
     INTEGER, INTENT(INOUT)                    :: avg_nsteps             ! number of avg steps accumulated
     INTEGER, INTENT(INOUT)                    :: diurnal_nsteps         ! number of diurnal steps accumulated
@@ -857,7 +857,7 @@ CONTAINS
 
     IMPLICIT NONE
 
-    TYPE(WRFU_Time), INTENT(IN)   :: currentTime
+    TYPE(WRFU_Time), INTENT(INOUT)   :: currentTime
     INTEGER, INTENT(IN)           :: mean_interval
     REAL, INTENT(IN)              :: dt, xtime 
     INTEGER, INTENT(IN)           :: output_freq
@@ -929,7 +929,7 @@ CONTAINS
 
     IMPLICIT NONE
 
-    TYPE(WRFU_Time), INTENT(IN)   :: currentTime
+    TYPE(WRFU_Time), INTENT(INOUT)   :: currentTime
     INTEGER, INTENT(IN)           :: mean_interval
     REAL, INTENT(IN)              :: dt, xtime 
     INTEGER, INTENT(IN)           :: output_freq
@@ -1065,7 +1065,7 @@ CONTAINS
 
     IMPLICIT NONE
 
-    TYPE(WRFU_Time), INTENT(IN)   :: currentTime
+    TYPE(WRFU_Time), INTENT(INOUT)   :: currentTime
     REAL, INTENT(IN)              :: dt, xtime 
     INTEGER, INTENT(IN)           :: output_freq
     integer, INTENT(IN)           :: diurn_interval

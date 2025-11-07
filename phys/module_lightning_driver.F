@@ -278,7 +278,7 @@
 ! Scheme specific prognostics
  INTEGER, DIMENSION( ims:ime,          jms:jme ),           INTENT(IN   ) :: ktop_deep     ! model LNB from cu_physics
  REAL,    DIMENSION( ims:ime, kms:kme, jms:jme ),           INTENT(IN   ) :: refl          ! reflectivity from mp_physics
- TYPE(WRFU_Time),                                           INTENT(IN   ) :: current_time  ! For use of IC:CG input
+ TYPE(WRFU_Time),                                           INTENT(INOUT) :: current_time  ! For use of IC:CG input
 
  REAL, DIMENSION( ims:ime, jms:jme ), INTENT(INOUT), OPTIONAL :: LPI
 ! Mandatory namelist inputs

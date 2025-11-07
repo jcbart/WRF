@@ -2483,6 +2483,10 @@ CONTAINS
 
       LOGICAL FUNCTION Is_alarm_tstep( grid_clock, alarm )
 
+#ifdef ESMFIO
+        USE ESMF
+#endif
+
         IMPLICIT NONE
 
         TYPE (WRFU_Clock), INTENT(in)  :: grid_clock
@@ -2490,8 +2494,42 @@ CONTAINS
 
         LOGICAL :: pred1, pred2, pred3
 
+#ifdef ESMFIO
+        LOGICAL                 :: isEnabled
+        ! For alarm
+        type(ESMF_Time) :: ringTime, prevRingTime, stopTime
+        type(ESMF_TimeInterval) :: ringInterval
+        ! For clock
+        type(ESMF_Time) :: currTime
+        type(ESMF_TimeInterval) :: timeStep
+#endif
+
         Is_alarm_tstep = .FALSE.
 
+#ifdef ESMFIO
+        isEnabled = ESMF_AlarmIsEnabled(alarm)
+
+        IF ( isEnabled ) THEN
+          pred1 = .FALSE. ; pred2 = .FALSE. ; pred3 = .FALSE.
+          call ESMF_ClockGet(grid_clock, timeStep=timeStep, currTime=currTime)
+          call ESMF_AlarmGet(alarm, ringTime=ringTime, prevRingTime=prevRingTime, ringInterval=ringInterval, stopTime=stopTime)
+          PRED1 = ( currTime + timeStep > stopTime )
+
+          PRED2 = ( ( ringTime - timeStep <= currTime ) &
+                    & .AND. ( currTime < ringTime ) )
+
+          PRED3 = ( prevRingTime + ringInterval <= &
+                    currTime + timeStep )
+
+          IF ( ( .NOT. ( pred1 ) ) .AND. &
+                ( ( pred2 ) .OR. ( pred3 ) ) ) THEN
+              Is_alarm_tstep = .TRUE.
+          ENDIF
+
+        ELSE IF ( ringTime - timeStep <= currTime ) THEN
+          Is_alarm_tstep = .TRUE.
+        ENDIF
+#else
         IF ( ASSOCIATED( alarm%alarmint ) ) THEN
           IF ( alarm%alarmint%Enabled ) THEN
             IF ( alarm%alarmint%RingIntervalSet ) THEN
@@ -2524,6 +2562,7 @@ CONTAINS
             ENDIF
           ENDIF
         ENDIF
+#endif
 
       END FUNCTION Is_alarm_tstep
 
