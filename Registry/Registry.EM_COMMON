@@ -528,8 +528,6 @@ state   real    qni2            ikjftb  scalar      1         -     \
    i0rhusdf=(bdy_interp:dt)    "QNICE2"         "Ice Number concentration cat 2" "# kg-1"
 state   real    qni3            ikjftb  scalar      1         -     \
    i0rhusdf=(bdy_interp:dt)    "QNICE3"         "Ice Number concentration cat 3" "# kg-1"
-state   real    nicontrail      ikjftb  scalar      1         -     \
-   i0rhusdf=(bdy_interp:dt)    "NIcontrail"     "Contrail Ice Number concentration" "# kg-1"
 state   real    qt             ikjftb  scalar      1         -     \
    i0rhusdf=(bdy_interp:dt)    "CWM"           "Total condensate mixing ratio"      "kg kg-1"
 state   real    qns            ikjftb  scalar      1         -     \

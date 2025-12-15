@@ -412,6 +412,7 @@ BENCH_START(rad_driver_tim)
      &        , QI=moist(ims,kms,jms,P_QI), F_QI=F_QI                     &
      &        , QI2=moist(ims,kms,jms,P_QI2), F_QI2=F_QI2                 & ! for P3
      &        , QI3=moist(ims,kms,jms,P_QI3), F_QI3=F_QI3                 & ! for Jensen ISHMAEL
+     &        , QIcontrail=moist(ims,kms,jms,P_qicontrail)                &
      &        , QS=moist(ims,kms,jms,P_QS), F_QS=F_QS                     &
      &        , QG=moist(ims,kms,jms,P_QG), F_QG=F_QG                     &
      &        , QH=moist(ims,kms,jms,P_QH), F_QH=F_QH                     & ! goddardrad

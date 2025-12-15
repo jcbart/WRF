@@ -110,6 +110,7 @@ CONTAINS
               , QI, F_QI                                                  &
               , QI2, F_QI2                                                &
               , QI3, F_QI3                                                &
+              , QIcontrail                                                &
               , QS, F_QS                                                  &
               , QG, F_QG                                                  &
               , QH, F_QH                                                  &
@@ -874,7 +875,8 @@ CONTAINS
                                                                pb &
                                         ,qv,qc,qr,qi,qs,qg,qh,qndrop,      &
                                                       qnifa,qnwfa,qnbca,   & ! Trude
-                                                      qi2,qi3        ! for P3
+                                                      qi2,qi3,             & ! for P3
+                                                      qicontrail
 
    LOGICAL, OPTIONAL ::     f_qv,f_qc,f_qr,f_qi,f_qs,f_qg,f_qh,f_qndrop,&
                                                 f_qnifa,f_qnwfa,        &  ! trude
@@ -1258,6 +1260,19 @@ CONTAINS
            ENDDO
            ENDDO
          endif
+!
+! temporarily modify hydrometeors (this is for contrail ice)
+!
+         IF ( F_QI ) THEN
+           DO j=jts,jte
+           DO k=kts,kte
+           DO i=its,ite
+             qi(i,k,j) = qi(i,k,j) + qicontrail(i,k,j)
+           ENDDO
+           ENDDO
+           ENDDO
+         ENDIF
+
 !
 ! temporarily modify hydrometeors (this is for GD scheme and WRF-Chem)
 !
