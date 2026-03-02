@@ -214,6 +214,9 @@ SUBROUTINE wrf_message( str )
      call wrf_log_action(wrf_log_write,len_trim(str),str)
 #endif
   else
+#ifdef ESMFIO
+     CALL ESMF_LogWrite(TRIM(str),ESMF_LOGMSG_INFO)
+#else
 !$OMP MASTER
      if(stderrlog/=0) then
 300     format(A)
@@ -224,11 +227,9 @@ SUBROUTINE wrf_message( str )
      endif
      print 300,trim(str)
 !$OMP END MASTER
+#endif
   endif
 
-#ifdef ESMFIO
-  CALL ESMF_LogWrite(TRIM(str),ESMF_LOGMSG_INFO)
-#endif
 END SUBROUTINE wrf_message
 
 ! ------------------------------------------------------------------------------

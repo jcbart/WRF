@@ -89,9 +89,14 @@ CONTAINS
          write(buf,3031) TRIM(string),elapsed_seconds
          call wrf_message(buf)
       else
+#ifdef ESMFIO
+         write(buf,3031) TRIM(string),elapsed_seconds
+         call wrf_message(buf)
+#else
          if(stderrlog/=0) &
               write(0,3031) TRIM(string),elapsed_seconds
          write(6,3031) TRIM(string),elapsed_seconds
+#endif
       endif
 
 !     cpu_seconds = cpu_2 - cpu_1
