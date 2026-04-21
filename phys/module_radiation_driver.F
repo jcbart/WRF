@@ -111,6 +111,7 @@ CONTAINS
               , QI2, F_QI2                                                &
               , QI3, F_QI3                                                &
               , QIcontrail                                                &
+              , REIcontrail                                               &
               , QS, F_QS                                                  &
               , QG, F_QG                                                  &
               , QH, F_QH                                                  &
@@ -875,8 +876,9 @@ CONTAINS
                                                                pb &
                                         ,qv,qc,qr,qi,qs,qg,qh,qndrop,      &
                                                       qnifa,qnwfa,qnbca,   & ! Trude
-                                                      qi2,qi3,             & ! for P3
-                                                      qicontrail
+                                                      qi2,qi3                ! for P3
+
+   REAL, DIMENSION( ims:ime, kms:kme, jms:jme ), INTENT(INOUT) :: qicontrail, reicontrail
 
    LOGICAL, OPTIONAL ::     f_qv,f_qc,f_qr,f_qi,f_qs,f_qg,f_qh,f_qndrop,&
                                                 f_qnifa,f_qnwfa,        &  ! trude
@@ -970,6 +972,10 @@ CONTAINS
                                                           ITRMN
    REAL    ::    OBECL,SINOB,SXLONG,ARG,DECDEG,                  &
                  DJUL,RJUL,ECCFAC
+   REAL    :: qi_natural ! Temporary natural ice mass value
+   REAL    :: reic ! Temporary contrail effective radius value
+   REAL, PARAMETER :: qi_eps = 1.0E-10 ! Minimum ice mass for effective radius combination
+   REAL, PARAMETER :: rei_eps = 1.0E-7 ! Minimum effective radius for effective radius combination
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme ) :: qc_temp
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme ) :: qi_save,qc_save
    REAL, DIMENSION( ims:ime, kms:kme, jms:jme ) :: qs_save
@@ -1610,6 +1616,40 @@ CONTAINS
        END DO
 
    ENDIF Solar_step
+
+   ! After re_ice has been modified by microphysics schemes and before it is used in any radiation
+   ! schemes, combined natural and contrail effective radii together
+   ! There is no good place to do this since (total) qi is used in cloud fraction calls before
+   ! re_ice has been modified, so here we have to subtract qicontrail from qi to get natural qi
+   IF ( F_QI ) THEN
+      DO j=jts,jte
+      DO k=kts,kte
+      DO i=its,ite
+         ! Subtract contrail mass from total ice mass to get natural ice mass
+         qi_natural = qi(i,k,j) - qicontrail(i,k,j)
+
+         ! Make contrail effective radius equivalent to Fu (1996) definition
+         ! D_ge = 8 / (3 * sqrt(3)) * r_e (contrail) and D_ge = 1.0315 * r_e (WRF)
+         ! => r_e (WRF) = 1 / 1.0315 * 8 / (3 * sqrt(3)) * r_e (contrail)
+         reic = 1.493 * reicontrail(i,k,j)
+
+         ! If all values are positive, use full equation
+         IF ( (qi_natural > qi_eps) .AND. (re_ice(i,k,j) > rei_eps) &
+              .AND. (qicontrail(i,k,j) > qi_eps) .AND. (reic > rei_eps) ) THEN
+            
+            re_ice(i,k,j) = (qi_natural + qicontrail(i,k,j)) &
+               / ((qi_natural / re_ice(i,k,j)) + (qicontrail(i,k,j) / reic))
+         
+         ! Else if only contrail values are positive, use contrail values
+         ELSEIF ( (qicontrail(i,k,j) > qi_eps) .AND. (reic > rei_eps) ) THEN
+            re_ice(i,k,j) = reic
+         
+         ! Else, don't touch values
+         ENDIF
+      ENDDO
+      ENDDO
+      ENDDO
+   ENDIF
 
    Radiation_step: IF ( run_param ) then
 ! CAM-specific additional radiation frequency - cam_abs_freq_s (=21600s by default)
