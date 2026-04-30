@@ -10810,6 +10810,7 @@ CONTAINS
      &                                 retab(idx_rei+1)*corr
                      reice1D(ncol,K) = MAX(reice1D(ncol,K), 5.0)
                   endif
+                  reice1D(ncol,K) = MIN(reice1D(ncol,K), 135.72)   !- 1.0315*reice <= 140 microns
                ENDDO
             ELSE
                DO K=kts,kte

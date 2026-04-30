@@ -12207,7 +12207,7 @@ CONTAINS
                      corr = t3d(i,k,j) - int(t3d(i,k,j))
                      reice1D(ncol,K) = retab(idx_rei)*(1.-corr) +       &
      &                                 retab(idx_rei+1)*corr
-                     reice1D(ncol,K) = MAX(reice1D(ncol,K), 5.0)
+                     reice1D(ncol,K) = MIN(MAX(reice1D(ncol,K), 5.0), 135.72)   !- 1.0315*reice<= 140 microns
                   endif
                ENDDO
             ELSE
